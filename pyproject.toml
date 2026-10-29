@@ -1,0 +1,11 @@
+[project]
+name = "esint-at-daten-mcp"
+version = "0.1.0"
+description = "MCP-Server: Feiertage AT, Schulferien je Bundesland 2026/27, Kleinunternehmergrenze, SVS-Werte 2026"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+[project.scripts]
+esint-at-daten = "esint_at_daten.server:main"
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
