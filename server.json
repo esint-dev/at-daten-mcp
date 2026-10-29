@@ -1,0 +1,9 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.esint-dev/at-daten-mcp",
+  "title": "ESINT AT-Daten",
+  "description": "Austrian holidays, school holidays per state 2026/27, small-business VAT limit, SVS 2026 values.",
+  "repository": {"url": "https://github.com/esint-dev/at-daten-mcp", "source": "github"},
+  "version": "0.1.0",
+  "packages": [{"registryType": "oci", "identifier": "ghcr.io/esint-dev/at-daten-mcp:0.1.0", "transport": {"type": "stdio"}}]
+}

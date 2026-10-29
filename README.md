@@ -28,6 +28,12 @@ Tests: `python -m unittest`
 
 Hinweise: Schulferien gelten für mittlere/höhere Schulen, Pflichtschulen üblicherweise gleich; schulautonome Tage und Landespatrone nicht enthalten. Alle Werte unverbindlich, keine Steuer- oder Rechtsberatung.
 
+Auch als Apify-Actor (pro Abruf 0,005 $): https://apify.com/esint/at-daten
+
+Docker: `docker run -i --rm ghcr.io/esint-dev/at-daten-mcp:0.1.0`
+
+<!-- mcp-name: io.github.esint-dev/at-daten-mcp -->
+
 ## Werbung
 Anzeige (eigenes Produkt): Einnahmen-Ausgaben-Paket für Kleinunternehmer AT – https://gumroad.com/l/hipixo (gratis Lite)
 
