@@ -1,5 +1,7 @@
 # ESINT AT-Daten (MCP-Server)
 
+[![Listed on mcpservers.org](https://mcpservers.org/badge.svg)](https://mcpservers.org/servers/esint-dev/at-daten-mcp)
+
 Österreich-Daten für KI-Assistenten über das Model Context Protocol (stdio, ohne Abhängigkeiten, Python ≥ 3.9).
 
 | Tool | Inhalt |
