@@ -3,16 +3,37 @@ import json, sys
 from . import data
 
 TOOLS = {
- "feiertage": ({"type":"object","properties":{"jahr":{"type":"integer"}},"required":["jahr"]},
-   "Gesetzliche Feiertage in Österreich für ein Jahr.", lambda a: data.feiertage(int(a["jahr"]))),
- "schulferien": ({"type":"object","properties":{"bundesland":{"type":"string","enum":data.BUNDESLAENDER},"schuljahr":{"type":"string","default":"2026/27"}},"required":["bundesland"]},
-   "Schulferien je Bundesland (Schuljahr 2026/27, Quelle bmb.gv.at).", lambda a: data.schulferien(a["bundesland"], a.get("schuljahr","2026/27"))),
+ "feiertage": ({
+   "type":"object",
+   "properties":{
+     "jahr":{"type":"integer","description":"Kalenderjahr als vierstellige Zahl, z. B. 2026 oder 2027 (1900–2200)."}
+   },
+   "required":["jahr"]},
+   "Gibt die 13 gesetzlichen Feiertage Österreichs (Feiertagsruhegesetz/ARG) für ein Kalenderjahr zurück: Liste von {datum ISO-YYYY-MM-DD, name}. Österreichweit, nicht je Bundesland. Read-only, keine Auth. Bei ungültigem Jahr: Fehler. Für Schulferien statt Feiertagen schulferien nutzen.",
+   lambda a: data.feiertage(int(a["jahr"]))),
+ "schulferien": ({
+   "type":"object",
+   "properties":{
+     "bundesland":{"type":"string","enum":data.BUNDESLAENDER,"description":"Österreichisches Bundesland (exakter Name aus der Enum, Groß/Klein egal)."},
+     "schuljahr":{"type":"string","default":"2026/27","description":"Schuljahr im Format YYYY/YY; aktuell nur 2026/27."}
+   },
+   "required":["bundesland"]},
+   "Gibt Schulferien (Herbst, Weihnachten, Semester, Ostern, Pfingsten, Sommer) für ein Bundesland zurück: Liste von {name, von, bis} (ISO-Daten). Quelle bmb.gv.at, Schuljahr 2026/27 (mittlere/höhere Schulen). Read-only. Nicht für gesetzliche Feiertage – dafür feiertage. Unbekanntes Bundesland oder Schuljahr → Fehler.",
+   lambda a: data.schulferien(a["bundesland"], a.get("schuljahr","2026/27"))),
  "kleinunternehmergrenze": ({"type":"object","properties":{}},
-   "Kleinunternehmergrenze Umsatzsteuer AT 2026.", lambda a: data.KLEINUNTERNEHMER_2026),
+   "Liefert die USt-Kleinunternehmergrenze AT 2026 als Objekt: umsatzgrenze_brutto_eur (55000), toleranz_prozent (10), toleranzgrenze_eur (60500), hinweis, quelle (USP). Read-only, keine Parameter, keine Auth. Unverbindlich, keine Steuerberatung.",
+   lambda a: data.KLEINUNTERNEHMER_2026),
  "svs_werte": ({"type":"object","properties":{}},
-   "SVS/GSVG-Werte 2026 (Beitragssätze, Mindest-/Höchstbeitragsgrundlage).", lambda a: data.SVS_2026),
- "svs_schaetzung": ({"type":"object","properties":{"jahresgewinn_eur":{"type":"number"}},"required":["jahresgewinn_eur"]},
-   "Grobe SVS-Beitragsschätzung 2026 aus Jahresgewinn (unverbindlich).", lambda a: data.svs_schaetzung(float(a["jahresgewinn_eur"]))),
+   "Liefert die amtlichen SVS/GSVG-Referenzwerte 2026 (Beitragssätze PV/KV, Mindest-/Höchstbeitragsgrundlage, UV-Beitrag, Versicherungsgrenze neue Selbständige) als Objekt mit Quelle. Read-only, keine Berechnung. Für eine grobe Monats-/Jahresschätzung aus Gewinn svs_schaetzung nutzen. Unverbindlich.",
+   lambda a: data.SVS_2026),
+ "svs_schaetzung": ({
+   "type":"object",
+   "properties":{
+     "jahresgewinn_eur":{"type":"number","description":"Jahresgewinn in Euro ≥ 0 (vor SV-Beiträgen; grober Richtwert, keine Steuerbemessung)."}
+   },
+   "required":["jahresgewinn_eur"]},
+   "Schätzt grob monatliche/jährliche SVS-Beiträge 2026 (PV+KV+UV) aus Jahresgewinn: Objekt mit beitragsgrundlage_monat, pv_monat, kv_monat, uv_monat, summe_monat, summe_jahr, hinweis. Unverbindlicher Richtwert, keine Auth. Für reine Tabellenwerte (Sätze/Grenzen) svs_werte nutzen. Negativer Gewinn → Fehler.",
+   lambda a: data.svs_schaetzung(float(a["jahresgewinn_eur"]))),
 }
 
 def handle(msg):
@@ -20,7 +41,7 @@ def handle(msg):
     if i is None: return None
     if m == "initialize":
         r = {"protocolVersion":msg.get("params",{}).get("protocolVersion","2025-06-18"),"capabilities":{"tools":{}},
-             "serverInfo":{"name":"esint-at-daten","version":"0.1.0"}}
+             "serverInfo":{"name":"esint-at-daten","version":"0.1.1"}}
     elif m == "ping": r = {}
     elif m == "tools/list":
         r = {"tools":[{"name":n,"description":d,"inputSchema":s} for n,(s,d,_) in TOOLS.items()]}
