@@ -2,7 +2,7 @@
 
 [![Listed on mcpservers.org](https://mcpservers.org/badge.svg)](https://mcpservers.org/servers/esint-dev/at-daten-mcp)
 [![Glama](https://glama.ai/mcp/servers/esint-dev/at-daten-mcp/badge)](https://glama.ai/mcp/servers/esint-dev/at-daten-mcp)
-[![Glama score](https://glama.ai/mcp/servers/esint-dev/at-daten-mcp/badges/score.svg)](https://glama.ai/mcp/servers/esint-dev/at-daten-mcp/score)
+[![esint-dev/at-daten-mcp MCP server](https://glama.ai/mcp/servers/esint-dev/at-daten-mcp/badges/score.svg)](https://glama.ai/mcp/servers/esint-dev/at-daten-mcp)
 
 Österreich-Daten für KI-Assistenten über das Model Context Protocol (stdio, ohne Abhängigkeiten, Python ≥ 3.9).
 
